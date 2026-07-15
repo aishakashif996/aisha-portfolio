@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aisha Kashif — Python / FastAPI Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161B1F;
+    --ink-soft:#232A30;
+    --paper:#F4F1E8;
+    --paper-dim:#EAE5D6;
+    --teal:#4FA695;
+    --teal-dim:#3A7A6E;
+    --amber:#E3A23C;
+    --line-dark:#3A4048;
+    --line-light:#D8D2C0;
+    --text-dark:#1C2321;
+    --text-muted:#726C5E;
+    --text-on-ink:#EDE8D8;
+    --text-on-ink-muted:#9BA39E;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--text-dark);
+    font-family:'IBM Plex Sans',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--amber);color:var(--ink);}
+  a{color:inherit;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 28px;}
+
+  /* Focus visibility */
+  a:focus-visible, button:focus-visible{outline:2px solid var(--teal); outline-offset:3px;}
+
+  /* ===== NAV ===== */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(244,241,232,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line-light);
+  }
+  nav .wrap{display:flex; justify-content:space-between; align-items:center; height:60px;}
+  .nav-mark{font-family:'IBM Plex Mono',monospace; font-size:14px; letter-spacing:.02em;}
+  .nav-mark span{color:var(--teal-dim); font-weight:500;}
+  .nav-links{display:flex; gap:26px; font-size:14px; font-family:'IBM Plex Mono',monospace;}
+  .nav-links a{text-decoration:none; color:var(--text-muted); transition:color .15s;}
+  .nav-links a:hover{color:var(--text-dark);}
+  @media(max-width:640px){ .nav-links{display:none;} }
+
+  /* ===== HERO ===== */
+  .hero{
+    background:var(--ink);
+    color:var(--text-on-ink);
+    padding:88px 0 76px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--line-dark);
+  }
+  .hero:before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line-dark) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-dark) 1px, transparent 1px);
+    background-size:42px 42px;
+    opacity:.28;
+    mask-image:radial-gradient(ellipse 70% 60% at 50% 20%, black 10%, transparent 75%);
+  }
+  .hero .wrap{position:relative;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px; color:var(--teal);
+    letter-spacing:.06em;
+    margin:0 0 18px;
+  }
+  .eyebrow:before{content:"// "; color:var(--text-on-ink-muted);}
+  h1.name{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(40px,7vw,68px);
+    line-height:1.02;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+  }
+  .role{
+    font-size:19px;
+    color:var(--text-on-ink-muted);
+    max-width:520px;
+    margin:0 0 40px;
+    line-height:1.55;
+  }
+  .role strong{color:var(--text-on-ink); font-weight:500;}
+
+  /* Signature element: proof -> program */
+  .proof{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:clamp(14px,2vw,17px);
+    display:flex; flex-wrap:wrap; align-items:center; gap:14px 18px;
+    background:var(--ink-soft);
+    border:1px solid var(--line-dark);
+    border-radius:6px;
+    padding:20px 24px;
+    max-width:640px;
+    margin-bottom:44px;
+  }
+  .proof .math{color:var(--amber);}
+  .proof .arrow{color:var(--text-on-ink-muted); font-size:15px;}
+  .proof .code{color:var(--teal);}
+  .proof .code .kw{color:#E4907A;}
+  .proof .code .fn{color:#8FBFE0;}
+
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    padding:12px 22px;
+    border-radius:4px;
+    text-decoration:none;
+    display:inline-block;
+    transition:transform .15s, background .15s, border-color .15s;
+    border:1px solid transparent;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--teal); color:var(--ink); font-weight:500;}
+  .btn-primary:hover{background:#5DB6A4;}
+  .btn-ghost{border-color:var(--line-dark); color:var(--text-on-ink);}
+  .btn-ghost:hover{border-color:var(--teal); color:var(--teal);}
+
+  /* ===== SECTION SHARED ===== */
+  section{padding:64px 0;}
+  section.alt{background:var(--paper-dim);}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:34px;}
+  .sec-num{font-family:'IBM Plex Mono',monospace; color:var(--teal-dim); font-size:14px;}
+  h2{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:28px;
+    margin:0;
+    color:var(--text-dark);
+  }
+  .lede{max-width:640px; color:var(--text-muted); font-size:16px; line-height:1.7;}
+
+  /* ===== ABOUT ===== */
+  .about-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:48px; align-items:start;}
+  @media(max-width:720px){ .about-grid{grid-template-columns:1fr;} }
+  .about-grid p{font-size:16.5px; line-height:1.75; color:#3A342A; margin:0 0 14px;}
+  .fact-list{list-style:none; margin:0; padding:0; border-top:1px solid var(--line-light);}
+  .fact-list li{
+    display:flex; justify-content:space-between; gap:12px;
+    padding:13px 0; border-bottom:1px solid var(--line-light);
+    font-size:14.5px;
+  }
+  .fact-list .k{color:var(--text-muted); font-family:'IBM Plex Mono',monospace; font-size:13px;}
+  .fact-list .v{text-align:right; font-weight:500;}
+
+  /* ===== SKILLS ===== */
+  .skill-cols{display:grid; grid-template-columns:repeat(2,1fr); gap:30px 40px;}
+  @media(max-width:640px){ .skill-cols{grid-template-columns:1fr;} }
+  .skill-group h3{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--teal-dim); margin:0 0 12px; font-weight:500;
+  }
+  .skill-group ul{list-style:none; margin:0; padding:0;}
+  .skill-group li{
+    padding:9px 0; border-bottom:1px solid var(--line-light);
+    font-size:15px; color:#3A342A;
+  }
+
+  /* ===== PROJECTS ===== */
+  .project-card{
+    border:1px solid var(--line-light);
+    background:var(--paper);
+    border-radius:8px;
+    padding:30px 30px 26px;
+    margin-bottom:22px;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .project-card:hover{border-color:var(--teal-dim); box-shadow:0 4px 18px rgba(22,27,31,0.06);}
+  .project-top{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:10px; flex-wrap:wrap;}
+  .project-top h3{
+    font-family:'Fraunces',serif; font-size:22px; font-weight:500; margin:0; color:var(--text-dark);
+  }
+  .project-tag{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--teal-dim);
+    border:1px solid var(--teal-dim); padding:3px 9px; border-radius:20px; white-space:nowrap;
+  }
+  .project-card p{color:#4A4436; font-size:15px; line-height:1.65; margin:0 0 14px;}
+  .stack{display:flex; flex-wrap:wrap; gap:8px;}
+  .stack span{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-muted);
+    background:var(--paper-dim); padding:4px 10px; border-radius:4px;
+  }
+
+  /* ===== TIMELINE (experience/education) ===== */
+  .tl{border-left:2px solid var(--line-light); padding-left:26px; margin-left:6px;}
+  .tl-item{position:relative; padding-bottom:34px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item:before{
+    content:""; position:absolute; left:-32px; top:5px;
+    width:10px; height:10px; border-radius:50%;
+    background:var(--paper); border:2px solid var(--teal-dim);
+  }
+  .tl-top{display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:4px;}
+  .tl-top h3{font-family:'Fraunces',serif; font-weight:500; font-size:19px; margin:0;}
+  .tl-date{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--text-muted); white-space:nowrap; padding-top:3px;}
+  .tl-org{font-size:14.5px; color:var(--teal-dim); font-weight:500; margin-bottom:8px;}
+  .tl-item ul{margin:0; padding-left:18px; color:#4A4436; font-size:14.5px; line-height:1.65;}
+  .tl-item li{margin-bottom:4px;}
+
+  /* ===== CERTS ===== */
+  .cert-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  @media(max-width:760px){ .cert-grid{grid-template-columns:1fr;} }
+  .cert-card{
+    border:1px solid var(--line-light); border-radius:8px; padding:20px;
+    background:var(--paper); font-size:14px;
+  }
+  .cert-card .badge{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--amber);
+    margin-bottom:8px; display:block;
+  }
+  .cert-card h4{font-family:'Fraunces',serif; font-size:16.5px; margin:0 0 6px; font-weight:500;}
+  .cert-card .org{color:var(--text-muted); font-size:13px;}
+
+  /* ===== FOOTER / CONTACT ===== */
+  footer{
+    background:var(--ink); color:var(--text-on-ink); padding:64px 0 40px;
+  }
+  footer h2{color:var(--text-on-ink); font-size:30px;}
+  footer .lede{color:var(--text-on-ink-muted);}
+  .contact-row{
+    display:flex; gap:16px; flex-wrap:wrap; margin-top:28px;
+  }
+  .contact-chip{
+    font-family:'IBM Plex Mono',monospace; font-size:14px;
+    border:1px solid var(--line-dark); padding:12px 20px; border-radius:4px;
+    text-decoration:none; color:var(--text-on-ink);
+    transition:border-color .15s, color .15s;
+  }
+  .contact-chip:hover{border-color:var(--teal); color:var(--teal);}
+  .foot-bottom{
+    margin-top:56px; padding-top:22px; border-top:1px solid var(--line-dark);
+    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-on-ink-muted);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-mark">aisha<span>.kashif()</span></div>
+    <div class="nav-links">
+      <a href="#about">about</a>
+      <a href="#skills">skills</a>
+      <a href="#projects">projects</a>
+      <a href="#experience">experience</a>
+      <a href="#education">education</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">available for remote work</p>
+    <h1 class="name">Aisha Kashif</h1>
+    <p class="role">MS Mathematics graduate building a second career in <strong>Python &amp; FastAPI</strong> — bringing proof-level rigor to backend logic, and real e-commerce experience to real-world systems.</p>
+
+    <div class="proof">
+      <span class="math">&forall; x &isin; Books, donate(x) &rArr; available(x)</span>
+      <span class="arrow">&#8594;</span>
+      <span class="code"><span class="kw">def</span> <span class="fn">donate</span>(book): <span class="kw">return</span> mark_available(book)</span>
+    </div>
+
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#projects">View projects</a>
+      <a class="btn btn-ghost" href="mailto:aishanaz996@gmail.com">Get in touch</a>
+      <a class="btn btn-ghost" href="https://github.com/Aishakashif996" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>About</h2></div>
+    <div class="about-grid">
+      <div>
+        <p>I hold an MS in Mathematics from the University of Karachi (First Class), and spent years thinking in proofs, functions, and structured logic before turning that same discipline toward code.</p>
+        <p>I'm currently working through Bano Qabil's Python-to-FastAPI program, and building projects that connect directly to problems I actually understand — like running an online store, which is where <strong>BookLink</strong>, my flagship project, gets its real-world grounding.</p>
+        <p>I'm looking for remote Python/backend opportunities where careful reasoning matters as much as syntax.</p>
+      </div>
+      <ul class="fact-list">
+        <li><span class="k">LOCATION</span><span class="v">Karachi, Pakistan</span></li>
+        <li><span class="k">FOCUS</span><span class="v">Python &middot; FastAPI</span></li>
+        <li><span class="k">BACKGROUND</span><span class="v">Mathematics (MS)</span></li>
+        <li><span class="k">SEEKING</span><span class="v">Remote / Async roles</span></li>
+        <li><span class="k">ALSO RUNS</span><span class="v">AKcollection (e-commerce)</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="alt">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Skills</h2></div>
+    <div class="skill-cols">
+      <div class="skill-group">
+        <h3>Languages &amp; Frameworks</h3>
+        <ul>
+          <li>Python</li>
+          <li>FastAPI</li>
+          <li>HTML / CSS basics</li>
+          <li>SQL / SQLite</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Concepts</h3>
+        <ul>
+          <li>Object-Oriented Programming</li>
+          <li>REST API design</li>
+          <li>Authentication &amp; role-based access</li>
+          <li>CRUD operations &amp; error handling</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Tools</h3>
+        <ul>
+          <li>VS Code</li>
+          <li>Git &amp; GitHub Desktop</li>
+          <li>MS Office</li>
+          <li>MATLAB</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Domain</h3>
+        <ul>
+          <li>Mathematical &amp; analytical problem-solving</li>
+          <li>E-commerce operations</li>
+          <li>Affiliate marketing</li>
+          <li>Banking/financial process exposure</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Projects</h2></div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <h3>BookLink API</h3>
+        <span class="project-tag">flagship · FastAPI</span>
+      </div>
+      <p>A full book donation and exchange platform. Users register and log in (cookie-based session auth), browse all donated books or view "My Donations," and submit, edit, delete, or toggle the availability of their own listings. Admins get a dedicated panel with platform stats, user management, and one-click CSV export of all book data.</p>
+      <div class="stack">
+        <span>FastAPI</span><span>Jinja2</span><span>Session Auth</span><span>Admin Panel</span><span>CSV Export</span><span>REST</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <h3>BookLink (GUI)</h3>
+        <span class="project-tag">Tkinter</span>
+      </div>
+      <p>The desktop prototype that came before the API version — a Tkinter form where donors submit book details (title, subject, condition, contact info) and users can search the donated catalog by title.</p>
+      <div class="stack">
+        <span>Python</span><span>Tkinter</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <h3>AK Library</h3>
+        <span class="project-tag">foundation project</span>
+      </div>
+      <p>A console-based library management system built to practice core OOP: <code>Book</code> and <code>Library</code> classes handle adding books, borrowing/returning, and browsing the catalog through a menu-driven interface.</p>
+      <div class="stack">
+        <span>Python</span><span>OOP</span><span>CLI</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience" class="alt">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Experience</h2></div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-top"><h3>CEO</h3><span class="tl-date">Ongoing</span></div>
+        <div class="tl-org">AKcollection — Lifestyle &amp; Household Brand</div>
+        <ul>
+          <li>Lead brand strategy, product sourcing, and e-commerce operations across a varied catalog: kitchen and household goods, trendy electric organizers, and other lifestyle products.</li>
+          <li>Real operational experience that directly informs the design of BookLink's listing and approval flows.</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-top"><h3>Affiliate Marketer</h3><span class="tl-date">Ongoing</span></div>
+        <div class="tl-org">astore.pk</div>
+        <ul>
+          <li>Promote third-party products through affiliate marketing, driving traffic and earning commission-based revenue.</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-top"><h3>Intern</h3><span class="tl-date">Jul – Sep 2016</span></div>
+        <div class="tl-org">Bank of Punjab</div>
+        <ul>
+          <li>7-week internship across Deposits, Remittances, Clearing (Inward/Outward), Account Opening, and Accounts.</li>
+          <li>Recognized by supervisors as regular, punctual, and highly competent in assigned tasks.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Education</h2></div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-top"><h3>MS, Mathematics</h3><span class="tl-date">Conferred 2019</span></div>
+        <div class="tl-org">University of Karachi — First Class</div>
+        <ul><li>Examination held 2017. Faculty of Science.</li></ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-top"><h3>BS (Honours), Science — Mathematics</h3><span class="tl-date">Conferred 2018</span></div>
+        <div class="tl-org">University of Karachi — First Class</div>
+        <ul><li>Examination held 2016. Faculty of Science.</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="certifications" class="alt">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Certifications &amp; Training</h2></div>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <span class="badge">IN PROGRESS</span>
+        <h4>Python to FastAPI</h4>
+        <div class="org">Bano Qabil — 12-module program</div>
+      </div>
+      <div class="cert-card">
+        <span class="badge">2026</span>
+        <h4>Basics of Python</h4>
+        <div class="org">UniAthena, with Cambridge International Qualifications</div>
+      </div>
+      <div class="cert-card">
+        <span class="badge">GRADE A</span>
+        <h4>Computer Operator (CIT)</h4>
+        <div class="org">STEVTA, Govt. of Sindh — 76.3%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num" style="color:var(--teal);">07</span><h2>Contact</h2></div>
+    <p class="lede">Open to remote Python/FastAPI roles, freelance backend work, or automation projects — especially anything touching e-commerce or structured data.</p>
+    <div class="contact-row">
+      <a class="contact-chip" href="mailto:aishanaz996@gmail.com">✉ aishanaz996@gmail.com</a>
+      <a class="contact-chip" href="https://github.com/Aishakashif996" target="_blank" rel="noopener">⌥ github.com/Aishakashif996</a>
+      <span class="contact-chip" style="cursor:default;">📍 Karachi, Pakistan</span>
+    </div>
+    <div class="foot-bottom">
+      <span>Aisha Kashif — Portfolio</span>
+      <span>Built with intent, not templates.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
